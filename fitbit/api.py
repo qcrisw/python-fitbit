@@ -344,6 +344,7 @@ class Fitbit(object):
             data['date'] = date_string
             base_url = "{0}/{1}/user/{2}/{resource}.json"
         url = base_url.format(*self._get_common_args(user_id), **kwargs)
+        print(url)
         return self.make_request(url, data)
 
     def _DELETE_COLLECTION_RESOURCE(self, resource, log_id):

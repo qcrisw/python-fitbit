@@ -579,6 +579,8 @@ class Fitbit(object):
             detail_level=detail_level
         )
 
+        print("Intraday request to : " +  url)
+
         if all(time_map):
             url = url + '/time'
             for time in [start_time, end_time]:

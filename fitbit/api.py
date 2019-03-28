@@ -20,7 +20,7 @@ from .utils import curry
 class FitbitOauth2Client(object):
     API_ENDPOINT = "https://api.fitbit.com"
     AUTHORIZE_ENDPOINT = "https://www.fitbit.com"
-    API_VERSION = 1
+    API_VERSION = 1.2
 
     request_token_url = "%s/oauth2/token" % API_ENDPOINT
     authorization_url = "%s/oauth2/authorize" % AUTHORIZE_ENDPOINT

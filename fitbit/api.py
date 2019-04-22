@@ -546,7 +546,7 @@ class Fitbit(object):
         )
         return self.make_request(url)
 
-    def intraday_time_series(self, resource, base_date='today', detail_level='1min', start_time=None, end_time=None):
+    def intraday_time_series(self, resource, base_date='today', end_date='today', detail_level='1min', start_time=None, end_time=None):
         """
         The intraday time series extends the functionality of the regular time series, but returning data at a
         more granular level for a single day, defaulting to 1 minute intervals. To access this feature, one must
@@ -571,12 +571,21 @@ class Fitbit(object):
         if not detail_level in ['1sec', '1min', '15min']:
             raise ValueError("Period must be either '1sec', '1min', or '15min'")
 
-        url = "{0}/{1}/user/-/{resource}/date/{base_date}/1d/{detail_level}".format(
-            *self._get_common_args(),
-            resource=resource,
-            base_date=self._get_date_string(base_date),
-            detail_level=detail_level
-        )
+        if base_date == end_date:
+            url = "{0}/{1}/user/-/{resource}/date/{base_date}/1d/{detail_level}".format(
+                *self._get_common_args(),
+                resource=resource,
+                base_date=self._get_date_string(base_date),
+                detail_level=detail_level
+            )
+        else:
+            url = "{0}/{1}/user/-/{resource}/date/{base_date}/{end_date}/{detail_level}".format(
+                *self._get_common_args(),
+                resource=resource,
+                base_date=self._get_date_string(base_date),
+                end_date=self._get_date_string(end_date),
+                detail_level=detail_level
+            )        
 
         if all(time_map):
             url = url + '/time'

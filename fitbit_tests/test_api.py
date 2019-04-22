@@ -684,12 +684,12 @@ class PartnerAPITest(TestBase):
     https://dev.fitbit.com/docs/
     """
 
-    def _test_intraday_timeseries(self, resource, base_date, detail_level,
+    def _test_intraday_timeseries(self, resource, base_date, end_date, detail_level,
                                   start_time, end_time, expected_url):
         """ Helper method for intraday timeseries tests """
         with mock.patch.object(self.fb, 'make_request') as make_request:
             retval = self.fb.intraday_time_series(
-                resource, base_date, detail_level, start_time, end_time)
+                resource, base_date, end_date, detail_level, start_time, end_time)
         args, kwargs = make_request.call_args
         self.assertEqual((expected_url,), args)
 
@@ -713,6 +713,7 @@ class PartnerAPITest(TestBase):
             self.fb.intraday_time_series,
             resource,
             base_date,
+            base_date,
             detail_level="xyz",
             start_time=None,
             end_time=None)
@@ -723,6 +724,7 @@ class PartnerAPITest(TestBase):
             self.fb.intraday_time_series,
             resource,
             base_date,
+            base_date,
             detail_level="1min",
             start_time='12:55',
             end_time=None)
@@ -730,6 +732,7 @@ class PartnerAPITest(TestBase):
             TypeError,
             self.fb.intraday_time_series,
             resource,
+            base_date,
             base_date,
             detail_level="1min",
             start_time='12:55',
@@ -741,6 +744,7 @@ class PartnerAPITest(TestBase):
             self.fb.intraday_time_series,
             resource,
             base_date,
+            base_date,
             detail_level="1min",
             start_time=None,
             end_time='12:55')
@@ -749,42 +753,43 @@ class PartnerAPITest(TestBase):
             self.fb.intraday_time_series,
             resource,
             base_date,
+            base_date,
             detail_level="1min",
             start_time='',
             end_time='12:55')
 
         # Default
         self._test_intraday_timeseries(
-            resource, base_date=base_date, detail_level='1min',
+            resource, base_date=base_date, end_date=base_date, detail_level='1min',
             start_time=None, end_time=None,
             expected_url=URLBASE + "/-/FOO/date/1918-05-11/1d/1min.json")
         # start_date can be a date object
         self._test_intraday_timeseries(
-            resource, base_date=datetime.date(1918, 5, 11),
+            resource, base_date=datetime.date(1918, 5, 11), end_date=datetime.date(1918, 5, 11),
             detail_level='1min', start_time=None, end_time=None,
             expected_url=URLBASE + "/-/FOO/date/1918-05-11/1d/1min.json")
         # start_time can be a datetime object
         self._test_intraday_timeseries(
-            resource, base_date=base_date, detail_level='1min',
+            resource, base_date=base_date, end_date=base_date, detail_level='1min',
             start_time=datetime.time(3, 56), end_time='15:07',
             expected_url=URLBASE + "/-/FOO/date/1918-05-11/1d/1min/time/03:56/15:07.json")
         # end_time can be a datetime object
         self._test_intraday_timeseries(
-            resource, base_date=base_date, detail_level='1min',
+            resource, base_date=base_date, end_date=base_date, detail_level='1min',
             start_time='3:56', end_time=datetime.time(15, 7),
             expected_url=URLBASE + "/-/FOO/date/1918-05-11/1d/1min/time/3:56/15:07.json")
         # start_time can be a midnight datetime object
         self._test_intraday_timeseries(
-            resource, base_date=base_date, detail_level='1min',
+            resource, base_date=base_date, end_date=base_date, detail_level='1min',
             start_time=datetime.time(0, 0), end_time=datetime.time(15, 7),
             expected_url=URLBASE + "/-/FOO/date/1918-05-11/1d/1min/time/00:00/15:07.json")
         # end_time can be a midnight datetime object
         self._test_intraday_timeseries(
-            resource, base_date=base_date, detail_level='1min',
+            resource, base_date=base_date, end_date=base_date, detail_level='1min',
             start_time=datetime.time(3, 56), end_time=datetime.time(0, 0),
             expected_url=URLBASE + "/-/FOO/date/1918-05-11/1d/1min/time/03:56/00:00.json")
         # start_time and end_time can be a midnight datetime object
         self._test_intraday_timeseries(
-            resource, base_date=base_date, detail_level='1min',
+            resource, base_date=base_date, end_date=base_date, detail_level='1min',
             start_time=datetime.time(0, 0), end_time=datetime.time(0, 0),
             expected_url=URLBASE + "/-/FOO/date/1918-05-11/1d/1min/time/00:00/00:00.json")

@@ -37,43 +37,43 @@ class HTTPException(Exception):
 class HTTPBadRequest(HTTPException):
     """Generic >= 400 error
     """
-    raise Exception("HTTPBadRequest")
+    raise HTTPException
 
 
 class HTTPUnauthorized(HTTPException):
     """401
     """
-    raise Exception("HTTPUnauthorized")
+    raise HTTPException
 
 
 class HTTPForbidden(HTTPException):
     """403
     """
-    raise Exception("HTTPForbidden")
+    raise HTTPException
 
 
 class HTTPNotFound(HTTPException):
     """404
     """
-    raise Exception("HTTPNotFound")
+    raise HTTPException
 
 
 class HTTPConflict(HTTPException):
     """409 - returned when creating conflicting resources
     """
-    raise Exception("HTTPConflict")
+    raise HTTPException
 
 
 class HTTPTooManyRequests(HTTPException):
     """429 - returned when exceeding rate limits
     """
-    raise Exception("HTTPTooManyRequests")
+    raise HTTPException
 
 
 class HTTPServerError(HTTPException):
     """Generic >= 500 error
     """
-    raise Exception("HTTPServerError")
+    raise HTTPException
 
 
 def detect_and_raise_error(response):

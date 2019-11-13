@@ -76,7 +76,6 @@ class HTTPServerError(HTTPException):
     """
     pass
 
-
 def detect_and_raise_error(response):
     if response.status_code == 401:
         raise HTTPUnauthorized(response)

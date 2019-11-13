@@ -74,7 +74,7 @@ class HTTPTooManyRequests(HTTPException):
 class HTTPServerError(HTTPException):
     """Generic >= 500 error
     """
-    pass
+    raise HTTPException
 
 def detect_and_raise_error(response):
     if response.status_code == 401:
